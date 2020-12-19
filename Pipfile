@@ -17,6 +17,7 @@ pandas = "*"
 plotly = "*"
 sqlalchemy = "*"
 uvicorn = {extras = ["standard"], version = "*"}
+pandas-profiling = "*"
 
 [requires]
 python_version = "3"
