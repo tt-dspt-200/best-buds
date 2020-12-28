@@ -11,8 +11,10 @@ def test_valid_input():
         '/predict',
         json={
             'x1': 3.14,
-            'x2': -42,
-            'x3': 'banjo'
+            'user_name': 'potshot',
+            'password': 'bang',
+            'user_ailment':'tired, stressed',
+            'user_effect': 'awake, relaxed'
         }
     )
     body = response.json()
@@ -27,8 +29,10 @@ def test_invalid_input():
         '/predict',
         json={
             'x1': -3.14,
-            'x2': -42,
-            'x3': 'banjo'
+            'user_name': 'potshot',
+            'password': 'bang',
+            'user_ailment':'tired, stressed',
+            'user_effect': 'awake, relaxed'
         }
     )
     body = response.json()
