@@ -13,35 +13,57 @@ router = APIRouter()
 class User(BaseModel):
     """Use this data model to parse the request body JSON."""
     # user name must be unique, how to code this?
-    # password musth be hidden, how to code this?
-    user_name: str = Field(..., example='potshot')
+    # password must be hidden, how to code this?
+    x1: float = Field(..., example=3.14)
+    user_name: str = Field(..., example='Pot S. Hot')
     password: str = Field(..., example='bang')
     user_ailment: str = Field(..., example='tired, stressed')
     user_effect: str = Field(..., example='awake, relaxed')
+    strain_name: str = Field(..., example='nice pot')
+    description: str = Field(..., example='lots of cool info about nice pot')
+    strain_ailments: str = Field(..., example='insomnia, anxiety')
+    strain_effects: str = Field(..., example='peace, chillness')
+
+    def write_data(df):
+    tablename = 'mytable'
+    df.to_sql(tablename, connection, if_exists='append', index=False, method='multi')
 
     def to_df(self):
         """Convert pydantic object to pandas dataframe with 1 row."""
         return pd.DataFrame([dict(self)])
 
-    @validator('user_name')
-    def user_name_unique(cls, value):
+    @validator('x1')
+    def x1_must_be_positive(cls, value):
         """Validate that the username is a string and is unique
         I do not yet know how to do this!"""
 
-        # assert value > 0, f'x1 == {value}, must be > 0'
+        assert value > 0, f'x1 == {value}, must be > 0'
         return 'this is not functional'
+
+    # @validator('user_name')
+    # def user_name_unique(cls, value):
+    #     """Validate that the username is a string and is unique
+    #     I do not yet know how to do this!"""
+
+    #     # assert value > 0, f'x1 == {value}, must be > 0'
+    #     return 'this is not functional'
 
 
 @router.post('/predict')
-async def predict(item: Item):
+async def predict(item: User):
     """
     Make random baseline predictions for classification problem 🔮
 
     ### Request Body
+    - `x1`: positive float
     - `user_name`: string
     - `password`: string
     - `user_ailment`: string
     - `user_effect`: string
+    - `stain_name`: string
+    - `description`: string
+    - `strain_ailment`: string
+    - `strain_effect`: string
 
     ### Response
     - `prediction`: boolean, at random

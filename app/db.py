@@ -1,7 +1,6 @@
 """Database functions"""
 
 import os
-
 from dotenv import load_dotenv
 from fastapi import APIRouter, Depends
 import sqlalchemy
@@ -10,13 +9,7 @@ router = APIRouter()
 
 
 async def get_db() -> sqlalchemy.engine.base.Connection:
-    """Get a SQLAlchemy database connection.
-    
-    Uses this environment variable if it exists:  
-    DATABASE_URL=dialect://user:password@host/dbname
-
-    Otherwise uses a SQLite database for initial local development.
-    """
+    """Get a SQLAlchemy database connection."""
     
     load_dotenv()
     database_url = os.getenv('DATABASE_URL', default='sqlite:///temporary.db')
