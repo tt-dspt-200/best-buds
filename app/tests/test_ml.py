@@ -35,4 +35,4 @@ def test_invalid_input():
     )
     body = response.json()
     assert response.status_code == 422
-    assert 'x1' in body['detail'][0]['loc']
+    assert 'user_name' in body['detail'][0]['loc']

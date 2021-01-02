@@ -12,7 +12,7 @@ async def get_db() -> sqlalchemy.engine.base.Connection:
     """Get a SQLAlchemy database connection."""
     
     load_dotenv()
-    database_url = os.getenv('DATABASE_URL', default='sqlite:///temporary.db')
+    database_url = os.getenv('DATABASE_URL')
     engine = sqlalchemy.create_engine(database_url)
     connection = engine.connect()
     try:
