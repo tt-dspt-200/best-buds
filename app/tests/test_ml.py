@@ -10,8 +10,7 @@ def test_valid_input():
     response = client.post(
         '/predict',
         json={
-            'x1': 3.14,
-            'user_name': str('potshot'),
+            'user_name': str('PotShot'),
             'password': str('bang'),
             'user_ailment': str('tired, stressed'),
             'user_effect': str('awake, relaxed')
@@ -24,12 +23,11 @@ def test_valid_input():
 
 
 def test_invalid_input():
-    """Return 422 Validation Error when x1 is negative."""
+    """Return 422 Validation Error when user_name is not a string"""
     response = client.post(
         '/predict',
         json={
-            'x1': 3.14,
-            'user_name': str('potshot'),
+            'user_name': str('PotShot'),
             'password': str('bang'),
             'user_ailment': str('tired, stressed'),
             'user_effect': str('awake, relaxed')
