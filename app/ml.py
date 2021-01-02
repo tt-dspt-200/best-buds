@@ -14,8 +14,7 @@ class User(BaseModel):
     """Use this data model to parse the request body JSON."""
     # user name must be unique, how to code this?
     # password must be hidden, how to code this?
-    x1: float = Field(..., example=3.14)
-    user_name: str = Field(..., example='Pot S. Hot')
+    user_name: str = Field(..., example='PotShot')
     password: str = Field(..., example='bang')
     user_ailment: str = Field(..., example='tired, stressed')
     user_effect: str = Field(..., example='awake, relaxed')
@@ -24,29 +23,25 @@ class User(BaseModel):
     strain_ailments: str = Field(..., example='insomnia, anxiety')
     strain_effects: str = Field(..., example='peace, chillness')
 
-    def write_data(df):
-    tablename = 'mytable'
-    df.to_sql(tablename, connection, if_exists='append', index=False, method='multi')
-
     def to_df(self):
         """Convert pydantic object to pandas dataframe with 1 row."""
         return pd.DataFrame([dict(self)])
 
-    @validator('x1')
-    def x1_must_be_positive(cls, value):
-        """Validate that the username is a string and is unique
-        I do not yet know how to do this!"""
-
-        assert value > 0, f'x1 == {value}, must be > 0'
-        return 'this is not functional'
-
-    # @validator('user_name')
-    # def user_name_unique(cls, value):
+    # @validator('x1')
+    # def x1_must_be_positive(cls, value):
     #     """Validate that the username is a string and is unique
     #     I do not yet know how to do this!"""
 
-    #     # assert value > 0, f'x1 == {value}, must be > 0'
-    #     return 'this is not functional'
+    #     assert value > 0, f'x1 == {value}, must be > 0'
+    #     return value
+
+    @validator('user_name')
+    def user_name_string(cls, value):
+        """Validate that the username is a string and is unique
+        I do not yet know how to do this!"""
+
+        assert type(value) is StringType, "name is not a string: %r" % name
+        return value
 
 
 @router.post('/predict')
