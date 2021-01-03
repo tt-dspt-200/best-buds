@@ -42,7 +42,7 @@ class User(BaseModel):
 
 
 @router.post('/predict')
-async def predict(item: User):
+async def predict(user: User):
     """
     Make random baseline predictions for classification problem 🔮
 
@@ -60,7 +60,7 @@ async def predict(item: User):
     Replace the placeholder docstring and fake predictions with your own model.
     This will become a strain suggestion or list of strain suggestions.
     """
-    X_new = item.to_df()
+    X_new = user.to_df()
     log.info(X_new)
     y_pred = random.choice([True, False])
     y_pred_proba = random.random() / 2 + 0.5
