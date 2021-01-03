@@ -7,12 +7,11 @@ import sqlalchemy
 
 router = APIRouter()
 
-
 async def get_db() -> sqlalchemy.engine.base.Connection:
     """Get a SQLAlchemy database connection."""
     
     load_dotenv()
-    database_url = os.getenv('DATABASE_URL')
+    database_url = os.getenv('DB_URL', default='sqlite:///temporary.db')
     engine = sqlalchemy.create_engine(database_url)
     connection = engine.connect()
     try:
