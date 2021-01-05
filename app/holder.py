@@ -26,5 +26,5 @@
 #     yield connection
 # finally:
 #     connection.close()
-print(database_url)
+# print(database_url)
 # print(DATABASE_URL)
