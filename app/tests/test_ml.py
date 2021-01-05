@@ -10,16 +10,16 @@ def test_valid_input():
     response = client.post(
         '/predict',
         json={
-            'user_name': str('PotShot'),
-            'password': str('bang'),
+            # 'user_name': str('PotShot'),
+            # 'password': str('bang'),
             'user_ailment': str('tired, stressed'),
             'user_effect': str('awake, relaxed')
         }
     )
     body = response.json()
     assert response.status_code == 200
-    assert body['prediction'] in [True, False]
-    assert 0.50 <= body['probability'] < 1
+    # assert body['prediction'] in [True, False]
+    # assert 0.50 <= body['probability'] < 1
 
 
 def test_invalid_input():
@@ -27,12 +27,12 @@ def test_invalid_input():
     response = client.post(
         '/predict',
         json={
-            'user_name': str('PotShot'),
-            'password': str('bang'),
+            # 'user_name': str('PotShot'),
+            # 'password': str('bang'),
             'user_ailment': str('tired, stressed'),
             'user_effect': str('awake, relaxed')
         }
     )
     body = response.json()
     assert response.status_code == 422
-    assert 'user_name' in body['detail'][0]['loc']
+    assert 'user_ailment' in body['detail'][0]['loc']
