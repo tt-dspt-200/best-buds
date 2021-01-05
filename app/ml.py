@@ -14,8 +14,8 @@ class User(BaseModel):
     """Use this data model to parse the request body JSON."""
     # user name must be unique, how to code this?
     # password must be hidden, how to code this?
-    # user_name: str = Field(..., example='PotShot')
-    # password: str = Field(..., example='bang')
+    user_name: str = Field(..., example='PotShot')
+    password: str = Field(..., example='bang')
     user_ailment: str = Field(..., example='tired, stressed')
     user_effect: str = Field(..., example='awake, relaxed')
 
@@ -54,6 +54,7 @@ async def predict(user: User):
     ### Response
     This will become a strain suggestion or list of strain suggestions.
     """
-    strain_requirements=(user.to_df())
-    return strain_requirements
+    info_in=(user.to_df())
+    info_out = info_in.to_json(orient="records")
+    return info_out
 
