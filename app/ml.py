@@ -1,4 +1,4 @@
- """Machine learning functions"""
+"""Machine learning functions"""
 
 import logging
 import random
@@ -12,12 +12,20 @@ router = APIRouter()
 
 class User(BaseModel):
     """Use this data model to parse the request body JSON."""
-    # user name must be unique, how to code this?
-    # password must be hidden, how to code this?
-    # user_name: str = Field(..., example='PotShot')
-    # password: str = Field(..., example='bang')
-    user_ailment: str = Field(..., example='tired, stressed')
-    user_effect: str = Field(..., example='awake, relaxed')
+    Type: str = Field(..., example='Type')
+    Depression: str = Field(..., example='Depression')
+    Inflammation: str = Field(..., example='')
+    Insomnia: str = Field(..., example='Insomnia')
+    Appitite:str = Field(..., example='Appitite')
+    Pain:str = Field(..., example='Pain')
+    Nausea:str = Field(..., example='Nausea')
+    Creative: str = Field(..., example='')
+    Energetic: str = Field(..., example='Energetic')
+    Euphoric: str = Field(..., example='')
+    Focused: str = Field(..., example='')
+    Happy: str = Field(..., example='Happy')
+    Hungry: str = Field(..., example='Hungry')
+    Relaxed: str = Field(..., example='Relaxed')
 
 
     def to_df(self):
@@ -32,13 +40,13 @@ class User(BaseModel):
     #     """Validate that the username is a string and is unique
     #     I do not yet know how to do this!"""
 
-    @validator('user_ailment')
-    def user_ailment_string(cls, value):
-        """Validate that the username is a string and is unique
-        I do not yet know how to do this!"""
+    # @validator('user_ailment')
+    # def user_ailment_string(cls, value):
+    #     """Validate that the username is a string and is unique
+    #     I do not yet know how to do this!"""
 
-        assert type(value) is StringType, "input is not a string: %r" % name
-        return value
+    #     assert type(value) is StringType, "input is not a string: %r" % name
+    #     return value
 
 
 @router.post('/predict')
@@ -48,13 +56,31 @@ async def predict(user: User):
 
     ### Request Body
 
-    - `user_ailment`: string
-    - `user_effect`: string
+    - `Type`: string
+    - `Depression`: string
+    - `Inflammation`: string
+    - `Insomnia`: string
+    - `Appitite`: string
+    - `Pain`: string
+    - `Nausea`: string
+    - `Creative`: string
+    - `Energetic`: string
+    - `Euphoric`: string
+    - `Focused`: string
+    - `Happy`: string
+    - `Hungry`: string
+    - `Relaxed`: string
 
     ### Response
-    This will become a strain suggestion or list of strain suggestions.
+    - `stain_name`: string
+    - `description`: string
+    - `strain_ailment`: string
+    - `strain_effect`: string
     """
-    info_in=user.to_df()
-    info_out = info_in.to_json(orient="records")
-    return info_out
+    return {
+        'strain_name': 'nice pot',
+        'description': 'lots of cool info about nice pot',
+        'strain_ailments': 'insomnia, anxiety',
+        'strain_effects': 'peace, chillness'
+        }
 
