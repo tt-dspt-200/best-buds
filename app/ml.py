@@ -59,5 +59,4 @@ async def predict(user: User):
         'description': description_v,
         'strain_effects': strain_effects_v,
         'strain_ailments': strain_ailments_v
-        }
-
+    }
