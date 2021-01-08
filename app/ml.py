@@ -45,7 +45,7 @@ async def predict(user: User):
     vectorizer = joblib.load('app/jl_tfidf.joblib')
     nn = joblib.load('app/jl_knn.joblib')
 
-    MJ = pd.read_csv('data\MJ.csv')
+    MJ = pd.read_csv('https://raw.githubusercontent.com/tt-dspt-200/best-buds/main/data/MJ.csv')
 
     model_food = vectorizer.transform([user.user_input])
 
