@@ -70,12 +70,12 @@ async def predict(user: User):
         strain_effects = (MJ.loc[nn.kneighbors(model_food.todense())[1][0][i]]['Effects_y']),
         strain_ailments = (MJ.loc[nn.kneighbors(model_food.todense())[1][0][i]]['Ailment'])
         strains.append([strain_name, description, strain_effects, strain_ailments])
-        return strains
 
     strain_df = pd.DataFrame(strains, columns = ['name', 'description', 'effects', 'ailments'])
-    strain_json = strain_df.to_json(orient="split", index=False)
-    result = json.dumps(strain_json)
+    strain_json = strain_df.to_json(orient="records")
+    parsed = json.loads(strain_json)
+    result = json.dumps(parsed)
 
     return {
-        strain_json
+        result
     }
