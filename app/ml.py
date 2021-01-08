@@ -2,7 +2,8 @@
 
 import logging
 import joblib
-import random
+import json
+# import random
 import pandas as pd
 
 from fastapi import APIRouter
@@ -29,8 +30,6 @@ class User(BaseModel):
 @router.post('/predict')
 async def predict(user: User):
     """
-    Make random baseline predictions for classification problem 🔮
-
     ### Request Body
 
     - `user_input:`: string
@@ -40,6 +39,7 @@ async def predict(user: User):
     - `description`: string
     - `strain_effects`: string
     - `strain_ailments`: string
+    x4
     """
     
     vectorizer = joblib.load('app/jl_tfidf.joblib')
@@ -48,15 +48,34 @@ async def predict(user: User):
     MJ = pd.read_csv('data\MJ.csv')
 
     model_food = vectorizer.transform([user.user_input])
-    strain_name_v=(MJ.loc[nn.kneighbors(model_food.todense())[1][0][0]]['Strain']),
-    description_v=(MJ.loc[nn.kneighbors(model_food.todense())[1][0][0]]['Description']),
-    strain_effects_v=(MJ.loc[nn.kneighbors(model_food.todense())[1][0][0]]['Effects_y']),
-    strain_ailments_v=(MJ.loc[nn.kneighbors(model_food.todense())[1][0][0]]['Ailment'])
+
+    # ### Old and functional?
+    # strain_name_v=(MJ.loc[nn.kneighbors(model_food.todense())[1][0][0]]['Strain']),
+    # description_v=(MJ.loc[nn.kneighbors(model_food.todense())[1][0][0]]['Description']),
+    # strain_effects_v=(MJ.loc[nn.kneighbors(model_food.todense())[1][0][0]]['Effects_y']),
+    # strain_ailments_v=(MJ.loc[nn.kneighbors(model_food.todense())[1][0][0]]['Ailment'])
+
+    # return {
+
+    #     'strain_name': strain_name_v,
+    #     'description': description_v,
+    #     'strain_effects': strain_effects_v,
+    #     'strain_ailments': strain_ailments_v
+    #     }
+
+    strains = []
+    for i in range(4):
+        strain_name = (MJ.loc[nn.kneighbors(model_food.todense())[1][0][i]]['Strain']),
+        description = (MJ.loc[nn.kneighbors(model_food.todense())[1][0][i]]['Description']),
+        strain_effects = (MJ.loc[nn.kneighbors(model_food.todense())[1][0][i]]['Effects_y']),
+        strain_ailments = (MJ.loc[nn.kneighbors(model_food.todense())[1][0][i]]['Ailment'])
+        strains.append([strain_name, description, strain_effects, strain_ailments])
+        return strains
+
+    strain_df = pd.DataFrame(strains, columns = ['name', 'description', 'effects', 'ailments'])
+    strain_json = strain_df.to_json(orient="split", index=False)
+    result = json.dumps(strain_json)
 
     return {
-
-        'strain_name': strain_name_v,
-        'description': description_v,
-        'strain_effects': strain_effects_v,
-        'strain_ailments': strain_ailments_v
+        strain_json
     }

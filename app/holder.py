@@ -1,3 +1,12 @@
+# uvicorn app.main:app --reload
+
+    # # # use list comprehension to break down strain info
+    # # n = 4
+    # # strain_list = [strains[i:i + n] for i in range(0, len(strains), n)]
+    
+    # # strain_df = pd.DataFrame(strain_list, columns = ['name', 'description', 'effects', 'ailments'])
+    # # strain_json = strain_df.to_json(orient="split", index=False)
+    # # result = json.dumps(strain_json)
 
 # """Machine learning functions"""
 
