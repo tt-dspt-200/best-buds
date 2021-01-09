@@ -17,7 +17,7 @@ router = APIRouter()
 class User(BaseModel):
     """
     The User class contains the input string with a user's ailments, effects, and
-    other information used to search for cannibis strains to meet the user's needs.
+    other information used to search for cannabis strains to meet the user's needs.
 
     The User class can be expanded for use with an application database.
     """

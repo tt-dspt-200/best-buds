@@ -1,4 +1,4 @@
 The  files in this folder represent work which was done before a significant change of direction. They may be useful
-for back engineering to work with a front end from a prior project by TE, thus they have been retained.
+for back engineering to work with a front end from a prior project by T Eakin, thus they have been retained.
 
-The viz files were imported from the scaffold provided by Lambda and are also retained for such purpose.
+The viz files were imported from the scaffold provided by Lambda and are also retained for such purpose. - S West

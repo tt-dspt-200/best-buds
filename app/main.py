@@ -2,12 +2,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-from app import ml
+from app import model
 
 description = """
-This application is to help people who can legally use cannibis to find strains to meet their needs.
+This application is to help people who can legally use cannabis to find strains to meet their needs.
 Users can input information about ailments they hope to address and the effects they would like to achieve
-The result will be a list of the top 5 recommended strains of cannibis, with descriptions of each.
+The result will be a list of the top 5 recommended strains of cannabis, with descriptions of each.
 """
 
 app = FastAPI(
