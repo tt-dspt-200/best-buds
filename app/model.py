@@ -6,12 +6,16 @@ import json
 import pandas as pd
 
 from fastapi import APIRouter
+from nltk.stem.snowball import SnowballStemmer
 from pydantic import BaseModel, Field
 from sklearn.neighbors import NearestNeighbors
 
 
-log = logging.getLogger(__name__)
+log = logging.getLogger(__name__) 
 router = APIRouter()
+
+
+
 
 
 class User(BaseModel):
@@ -45,13 +49,15 @@ async def predict(user: User):
     - `name`: string,`description`: string, `effects`: string, `ailments`: string x 5
 
     """
+    sb = SnowballStemmer("english")
+   
 
     vectorizer = joblib.load('app/jl_tfidf.joblib')
     nn = joblib.load('app/jl_knn.joblib')
 
     MJ = pd.read_csv('https://raw.githubusercontent.com/tt-dspt-200/best-buds/main/data/MJ.csv')
 
-    model_food = vectorizer.transform([user.user_input])
+    model_food = vectorizer.transform([sb.stem(user.user_input)])
 
     ### Access strain information and create JSON object
 
@@ -60,7 +66,7 @@ async def predict(user: User):
     strain_effects_list = []
     strain_ailments_list = []
 
-    for i in range(4):
+    for i in range(5):
         strain_name = (MJ.loc[nn.kneighbors(model_food.todense())[1][0][i]]['Strain']),
         description = (MJ.loc[nn.kneighbors(model_food.todense())[1][0][i]]['Description']),
         strain_effects = (MJ.loc[nn.kneighbors(model_food.todense())[1][0][i]]['Effects_y']),
