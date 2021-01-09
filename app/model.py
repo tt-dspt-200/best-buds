@@ -42,7 +42,7 @@ async def predict(user: User):
 
     ### Response
     JSON format of:
-    - `name`: string,`description`: string, `effects`: string, `ailments`: string X4
+    - `name`: string,`description`: string, `effects`: string, `ailments`: string x 5
 
     """
 
