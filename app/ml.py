@@ -3,24 +3,30 @@
 import logging
 import joblib
 import json
-# import random
 import pandas as pd
 
 from fastapi import APIRouter
-import pandas as pd
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field
 from sklearn.neighbors import NearestNeighbors
-
 
 
 log = logging.getLogger(__name__)
 router = APIRouter()
 
-class User(BaseModel):
-    """Use this data model to parse the request body JSON."""
-    user_input: str = Field(..., example=
-        """I am having trouble sleeping, I'm stressed and I don't want to eat. I would like to have an appetite, sleep well, and be able to relax.""")
 
+class User(BaseModel):
+    """
+    The User class contains the input string with a user's ailments, effects, and
+    other information used to search for cannibis strains to meet the user's needs.
+
+    The User class can be expanded for use with an application database.
+    """
+    user_input: str=Field(..., example=
+        """
+        I am having trouble sleeping, I'm stressed and I don't want to eat.
+        I would like to have an appetite, sleep well, and be able to relax.
+        I prefer sweet, citrus flavors.
+        """)
 
     def to_df(self):
         """Convert pydantic object to pandas dataframe with 1 row."""
@@ -35,13 +41,11 @@ async def predict(user: User):
     - `user_input:`: string
 
     ### Response
-    - `strain_name`: string
-    - `description`: string
-    - `strain_effects`: string
-    - `strain_ailments`: string
-    x4
+    JSON format of:
+    - `name`: string,`description`: string, `effects`: string, `ailments`: string X4
+
     """
-    
+
     vectorizer = joblib.load('app/jl_tfidf.joblib')
     nn = joblib.load('app/jl_knn.joblib')
 
@@ -49,33 +53,32 @@ async def predict(user: User):
 
     model_food = vectorizer.transform([user.user_input])
 
-    # ### Old and functional?
-    # strain_name_v=(MJ.loc[nn.kneighbors(model_food.todense())[1][0][0]]['Strain']),
-    # description_v=(MJ.loc[nn.kneighbors(model_food.todense())[1][0][0]]['Description']),
-    # strain_effects_v=(MJ.loc[nn.kneighbors(model_food.todense())[1][0][0]]['Effects_y']),
-    # strain_ailments_v=(MJ.loc[nn.kneighbors(model_food.todense())[1][0][0]]['Ailment'])
+    ### Access strain information and create JSON object
 
-    # return {
+    strain_name_list = []
+    description_list = []
+    strain_effects_list = []
+    strain_ailments_list = []
 
-    #     'strain_name': strain_name_v,
-    #     'description': description_v,
-    #     'strain_effects': strain_effects_v,
-    #     'strain_ailments': strain_ailments_v
-    #     }
-
-    strains = []
     for i in range(4):
         strain_name = (MJ.loc[nn.kneighbors(model_food.todense())[1][0][i]]['Strain']),
         description = (MJ.loc[nn.kneighbors(model_food.todense())[1][0][i]]['Description']),
         strain_effects = (MJ.loc[nn.kneighbors(model_food.todense())[1][0][i]]['Effects_y']),
         strain_ailments = (MJ.loc[nn.kneighbors(model_food.todense())[1][0][i]]['Ailment'])
-        strains.append([strain_name, description, strain_effects, strain_ailments])
+        strain_name_list.append(str(strain_name).strip("(").strip(")")),
+        description_list.append(str(description).strip("(").strip(")")),
+        strain_effects_list.append(str(strain_effects).strip("(").strip(")")),
+        strain_ailments_list.append(strain_ailments)
 
-    strain_df = pd.DataFrame(strains, columns = ['name', 'description', 'effects', 'ailments'])
+    strain_df = pd.DataFrame(
+        [strain_name_list, description_list, strain_effects_list, strain_ailments_list],
+        index=['name', 'description', 'effects', 'ailments']
+        ).T
+  
     strain_json = strain_df.to_json(orient="records")
     parsed = json.loads(strain_json)
     result = json.dumps(parsed)
 
     return {
-        result
+            result
     }
