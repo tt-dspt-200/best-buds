@@ -61,7 +61,7 @@ async def predict(user: User):
     stemmed = ""
     for item in output:
         stemmed += item + " "
-    model_food = vectorizer.transform({stemmed})
+    model_food = vectorizer.transform([stemmed])
 
 
     ### Access strain information and create JSON object
