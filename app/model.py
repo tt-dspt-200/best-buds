@@ -22,7 +22,6 @@ class User(BaseModel):
     """
     The User class contains the input string with a user's ailments, effects, and
     other information used to search for cannabis strains to meet the user's needs.
-
     The User class can be expanded for use with an application database.
     """
     user_input: str=Field(..., example=
@@ -41,13 +40,10 @@ class User(BaseModel):
 async def predict(user: User):
     """
     ### Request Body
-
     - `user_input:`: string
-
     ### Response
     JSON format of:
     - `name`: string,`description`: string, `effects`: string, `ailments`: string x 5
-
     """
     sb = SnowballStemmer("english")
    
@@ -56,19 +52,16 @@ async def predict(user: User):
     nn = joblib.load('app/jl_knn.joblib')
 
     MJ = pd.read_csv('https://raw.githubusercontent.com/tt-dspt-200/best-buds/main/data/MJ.csv')
-#The above line will be replaced with the following commented block to 
-#process the input in the same manner as the model
 
-    # model_food = vectorizer.transform([sb.stem(user.user_input)])
-    # output = []
-    # for word in user.user_input.split(): 
-    #     output.append(" ".join([sb.stem(word)]))
-    # stemmed = ""
-    # for item in output:
-    #     stemmed += item + " "
-    # model_food = vectorizer.transform([stemmed])
 
-############################
+    model_food = vectorizer.transform([sb.stem(user.user_input)])
+    output = []
+    for word in user.user_input.split(): 
+        output.append(" ".join([sb.stem(word)]))
+    stemmed = ""
+    for item in output:
+        stemmed += item + " "
+    model_food = vectorizer.transform({stemmed})
 
 
     ### Access strain information and create JSON object
