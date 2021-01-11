@@ -56,19 +56,16 @@ async def predict(user: User):
     nn = joblib.load('app/jl_knn.joblib')
 
     MJ = pd.read_csv('https://raw.githubusercontent.com/tt-dspt-200/best-buds/main/data/MJ.csv')
-#The above line will be replaced with the following commented block to 
-#process the input in the same manner as the model
 
-    # model_food = vectorizer.transform([sb.stem(user.user_input)])
-    # output = []
-    # for word in user.user_input.split(): 
-    #     output.append(" ".join([sb.stem(word)]))
-    # stemmed = ""
-    # for item in output:
-    #     stemmed += item + " "
-    # model_food = vectorizer.transform(stemmed)
 
-############################
+    model_food = vectorizer.transform([sb.stem(user.user_input)])
+    output = []
+    for word in user.user_input.split(): 
+        output.append(" ".join([sb.stem(word)]))
+    stemmed = ""
+    for item in output:
+        stemmed += item + " "
+    model_food = vectorizer.transform({stemmed})
 
 
     ### Access strain information and create JSON object
