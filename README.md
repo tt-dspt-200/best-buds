@@ -1,6 +1,6 @@
 Best Buds API README
 
-This project was created by Timothey Eakin & Sara West, Data Science students at Lambda School, in January 2021.
+This project was created by Timothy Eakin & Sara West, Data Science students at Lambda School, in January 2021.
 
 The Best Buds API is designed to enable legal users of cannabis to search through a list of potential strains and locate
 five options which may meet their needs.
